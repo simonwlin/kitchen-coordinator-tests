@@ -14,7 +14,10 @@
     "playwright-development": "npx playwright test",
     "test-acceptance-ci": "testcafe 'edge:headless' tests/acceptance/*.testcafe.js --app 'npm run build && npm run start' --window-size 1920,1080 --app-init-delay 60000",
     "test-acceptance-local": "testcafe 'chrome' tests/acceptance/*.testcafe.js --app 'npm run build && npm run start' --window-size 1920,1080 --app-init-delay 20000",
-    "test-acceptance-single": "testcafe 'chrome:headless' tests/acceptance/*.testcafe.js --window-size 1920,1080"
+    "test-acceptance-single": "testcafe 'chrome:headless' tests/acceptance/*.testcafe.js --window-size 1920,1080",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
   },
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
@@ -55,6 +58,7 @@
     "@types/nodemailer": "^7.0.1",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@vitest/coverage-v8": "^5.0.5",
     "dotenv-cli": "^10.0.0",
     "eslint": "^8",
     "eslint-config-airbnb": "^19.0.4",
@@ -66,6 +70,7 @@
     "prisma": "6.19.3",
     "testcafe": "^3.7.2",
     "ts-node": "^10.9.2",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.2",
+    "vitest": "^5.0.5"
   }
 }
