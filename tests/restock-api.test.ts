@@ -66,4 +66,54 @@ describe('PATCH /api/produce/[id]/restock', () => {
 
     expect(response.status).toBe(500);
   });
+
+  it('rejects a non-numeric produce ID', async () => {
+    const request = {
+      json: async () => ({ restockTrigger: 'half' }),
+    } as Request;
+
+    const response = await PATCH(request, { params: { id: 'abc' } });
+
+    expect(response.status).toBe(400);
+    expect(mocks.update).not.toHaveBeenCalled();
+  });
+
+  it('rejects an invalid restock trigger', async () => {
+    const request = {
+      json: async () => ({ restockTrigger: 'invalid' }),
+    } as Request;
+
+    const response = await PATCH(request, { params: { id: '2' } });
+
+    expect(response.status).toBe(400);
+    expect(mocks.update).not.toHaveBeenCalled();
+  });
+
+  it('rejects a negative custom threshold', async () => {
+    const request = {
+      json: async () => ({
+        restockTrigger: 'custom',
+        customThreshold: -5,
+      }),
+    } as Request;
+
+    const response = await PATCH(request, { params: { id: '2' } });
+
+    expect(response.status).toBe(400);
+    expect(mocks.update).not.toHaveBeenCalled();
+  });
+
+  it('rejects SQL-injection-like threshold input', async () => {
+    const request = {
+      json: async () => ({
+        restockTrigger: 'custom',
+        customThreshold: '1; DROP TABLE produce;',
+      }),
+    } as Request;
+
+    const response = await PATCH(request, { params: { id: '2' } });
+
+    expect(response.status).toBe(400);
+    expect(mocks.update).not.toHaveBeenCalled();
+  });
 });
